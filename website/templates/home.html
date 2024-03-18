@@ -1,0 +1,39 @@
+{% extends "base.html" %} {# Erweitert das Basis-HTML-Template #}
+{% block title %}Home{% endblock %} {# Definiert den Titel des Blocks #}
+
+{% block content %} {# Beginn des Blocks für den Inhalt #}
+    
+    <h1 align="center">Notizen</h1>
+
+    <ul class="list-group list-group-flush" id="notes">
+      <!--Schleife durch jede Notiz des Benutzers -->
+      {% for note in user.notes %} 
+      <li class="list-group-item">
+        <!-- Notizdaten anzeigen-->
+        {{ note.data }}
+        <!-- Knopf zum Ausführen der Update-Funktion -->
+        <button type="button" class="btn btn-warning" onClick="updateNote({{ note.id }})">Update</button>
+        <!-- Knopf zum Ausführen der Löschen-Funktion -->
+        <button type="button" class="close" onClick="deleteNote({{ note.id }})">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </li>
+      {% endfor %}
+    </ul>
+
+    <!-- Formular zum Hinzufügen einer neuen Notiz mit einem POST-http-Request -->
+    <form method="POST">
+      <textarea name="note" id="note" class="form-control"></textarea>
+      <br />
+      <div align="center">
+        <button type="submit" class="btn btn-primary">Füge eine Notiz hinzu</button>
+      </div>
+    </form>
+
+    {% block javascript %}
+    <script src="{{ url_for('static', filename='notes.js') }}"></script> 
+    <!-- Java Script zum Löschen einer Notiz -->
+    {% endblock %}
+
+
+{% endblock %}
