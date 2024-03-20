@@ -1,0 +1,16 @@
+FROM python:3.10
+
+LABEL Name="Python Flask Nutzerverwaltung und Notizen App" Version=1.0.0
+LABEL org.opencontainers.image.source = "https://github.com/DanjaBratan/CICDmitPythonUndCoKG"
+
+ARG srcDir=src
+WORKDIR /website
+COPY $srcDir/requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY $srcDir/run.py .
+COPY $srcDir/website ./website
+
+EXPOSE 5000
+
+CMD ["gunicorn", "-b", "0.0.0.0:5000", "run:website"]
