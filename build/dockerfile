@@ -1,7 +1,7 @@
 FROM python:3.10
 
-LABEL Name="Python Flask Nutzerverwaltung und Notizen App" Version=1.0.0
-LABEL org.opencontainers.image.source = "https://github.com/DanjaBratan/CICDmitPythonUndCoKG"
+#LABEL Name="Python Flask Nutzerverwaltung und Notizen App" Version=1.0.0
+#LABEL org.opencontainers.image.source = "https://github.com/DanjaBratan/CICDmitPythonUndCoKG"
 
 ARG srcDir=src
 WORKDIR /website
