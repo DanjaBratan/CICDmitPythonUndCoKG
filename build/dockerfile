@@ -8,9 +8,10 @@ WORKDIR /website
 COPY $srcDir/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY $srcDir/run.py .
+COPY $srcDir/main.py .
 COPY $srcDir/website ./website
+COPY $srcDir/instance ./instance
 
 EXPOSE 5000
 
-CMD ["gunicorn", "-b", "0.0.0.0:5000", "run:website"]
+CMD ["gunicorn", "-b", "0.0.0.0:5000", "main:website"]
