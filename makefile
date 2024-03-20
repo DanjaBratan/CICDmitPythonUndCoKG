@@ -1,6 +1,7 @@
-# Used by `image`, `push` & `deploy` targets, override as required
+# Used by `image`, `push`, (`deploy`) targets, override as required
 IMAGE_REG ?= ghcr.io
-IMAGE_REPO ?= DanjaBratan/CICDmitPythonUndCoKG
+#IMAGE_REPO ?= DanjaBratan/CICDmitPythonUndCoKG
+IMAGE_REPO ?= danjabratan/cicdmitpythonundcokg
 IMAGE_TAG ?= latest
 
 # Used by `deploy` target, sets Azure webap defaults, override as required
