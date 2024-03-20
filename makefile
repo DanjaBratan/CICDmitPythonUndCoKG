@@ -1,7 +1,7 @@
 # Used by `image`, `push`, (`deploy`) targets, override as required
 IMAGE_REG ?= docker.io
 IMAGE_REPO ?= danielderking11/cicdmitpythonundcokg
-IMAGE_TAG ?= latest1
+IMAGE_TAG ?= latest
 
 # Used by `deploy` target, sets Azure webap defaults, override as required
 #AZURE_RES_GROUP ?= temp-demoapps
@@ -11,7 +11,6 @@ IMAGE_TAG ?= latest1
 # Used by `test-api` target
 TEST_HOST ?= localhost:5000
 
-# Don't change
 SRC_DIR := src
 
 .PHONY: help lint lint-fix image push run deploy undeploy clean test-api .EXPORT_ALL_VARIABLES
@@ -31,12 +30,16 @@ lint-fix: venv  ## 📜 Lint & format, will try to fix errors and modify code
 
 image:  ## 🔨 Build container image from Dockerfile 
 	sudo docker build . --file build/Dockerfile \
-	#--tag $(IMAGE_REG)/$(IMAGE_REPO):$(IMAGE_TAG)
-	--tag $(IMAGE_TAG) $(IMAGE_REPO)
+	--tag $(IMAGE_REG)/$(IMAGE_REPO):$(IMAGE_TAG)
+	#--tag $(IMAGE_TAG) $(IMAGE_REPO)
+	# sudo docker build . --file build/Dockerfile -t danielderking11/cicdmitpythonundcokg
+	
+#run-docker: 
+#sudo docker run -p 5000:5000 danielderking11/cicdmitpythonundcokg
 
 push:  ## 📤 Push container image to registry 
-	#sudo docker push $(IMAGE_REG)/$(IMAGE_REPO):$(IMAGE_TAG)
-	sudo docker push $(IMAGE_REPO)
+	sudo docker push $(IMAGE_REG)/$(IMAGE_REPO):$(IMAGE_TAG)
+	#sudo docker push $(IMAGE_REPO)
 
 run: venv  ## 🏃 Run the server locally using Python & Flask
 	. $(SRC_DIR)/.venv/bin/activate \
