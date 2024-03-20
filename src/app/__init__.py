@@ -47,6 +47,6 @@ def start_app():
 
 # Funktion zum Erstellen der Datenbank, falls sie nicht vorhanden ist
 def create_database(app):
-    if not path.exists('website/' + DB_NAME):
+    if not path.exists('app/' + DB_NAME):
         db.create_all(app=app)
         print('Created Database!')
