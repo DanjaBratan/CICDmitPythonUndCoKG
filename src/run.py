@@ -1,4 +1,4 @@
-from website import start_app
+from app import start_app
 
 # Erstelle eine Flask-App
 app = start_app()
