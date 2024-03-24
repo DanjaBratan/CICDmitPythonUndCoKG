@@ -29,9 +29,7 @@ def start_app():
     # Import der Datenbankmodelle
     from .models import User, Note
 
-    # Erstellen der Datenbanktabellen
-    with app.app_context():
-        db.create_all()
+    create_database(app)
 
     # Konfiguration des Login-Managers für die Flask-App
     login_manager = LoginManager()
@@ -47,6 +45,7 @@ def start_app():
 
 # Funktion zum Erstellen der Datenbank, falls sie nicht vorhanden ist
 def create_database(app):
-    if not path.exists('app/' + DB_NAME):
-        db.create_all(app=app)
-        print('Created Database!')
+    with app.app_context():
+        if not path.exists('app/' + DB_NAME):
+            db.create_all()
+            print('Datenbank wurde erstellt!')

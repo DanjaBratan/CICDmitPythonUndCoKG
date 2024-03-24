@@ -13,7 +13,6 @@ def login():
     if request.method == 'POST':
         email = request.form.get('email')
         password = request.form.get('password')
-
         user = User.query.filter_by(email=email).first() # Suchen des Benutzers anhand der E-Mail-Adresse
         if user:           
             hashed_password = sha256(password.encode('utf-8')).hexdigest()
