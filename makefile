@@ -25,7 +25,8 @@ docker-run-container:
 docker-push-image:  ## 📤 Push container image to registry 
 	sudo docker push $(IMAGE_REG)/$(IMAGE_REPO):$(IMAGE_TAG)
 
-run-python-app: venv  ## 🏃 Run the server locally using Python & Flask
+## 🏃 für lokales Ausführen des Servers mit Python und Flask 
+run-python-app: venv
 	. $(SRC_DIR)/.venv/bin/activate \
 	&& python3 src/main.py
 
