@@ -1,0 +1,52 @@
+pipeline {
+    agent any
+
+    environment {
+        DOCKER_ACCOUNT = credentials('DockerAccount')
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[credentialsId: 'GitHubAccount', url: 'https://github.com/DanjaBratan/CICDmitPythonUndCoKG.git']])
+            }
+        }
+        stage('Preperation'){
+            steps{
+                sh 'make clean'
+                sh 'make lint-fix'
+            }
+        }
+        stage('Code Test-Report'){
+            steps{
+                sh 'make test-report'
+            }
+        }
+        //stage('postman api test'){
+        //  steps{
+        //      sh 'make test-api'
+        //  }
+        //}
+        stage('Build Docker Image'){
+            steps{
+                sh 'make docker-build-image'
+            }
+        }
+        stage('Push Docker Image'){
+            steps{
+                sh 'echo "$DOCKER_ACCOUNT_PSW" | sudo docker login docker.io -u $DOCKER_ACCOUNT_USR --password-stdin'
+                sh 'make docker-push-image'
+            }
+        }
+        stage('Docker Run Container'){
+            steps{
+                sh 'make docker-run-container'
+            }
+        }
+    }
+    post{
+        always{
+            sh 'docker logout'
+        }
+    }
+}
