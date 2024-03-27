@@ -4,6 +4,9 @@ IMAGE_TAG ?= latest
 TEST_HOST ?= localhost:5000
 SRC_DIR := src
 
+.PHONY: clean lint lint-fix run-python-app test test-report test-api docker-build-image docker-run-container docker-push-image venv .EXPORT_ALL_VARIABLES
+
+
 # ===========================================
 
 clean:  ## 🧹 Projekt aufräumen
@@ -27,11 +30,13 @@ lint-fix: venv  ## 📜 Stilprüfung & Formatierung, versucht Fehler zu beheben 
 
 # ===========================================
 
-## 🏃 lokales Ausführen des Servers mit Python und Flask 
+## 🏃 lokales Ausführen des Servers mit Python und Flask im Hintergrund
 run-python-app: venv
 	. $(SRC_DIR)/.venv/bin/activate \
-	&& python3 src/run.py
+	&& python3 src/run.py &
 
+stop-python-app: ## 🛑 Beendet den im Hintergrund laufenden Python-Server
+	pkill -f 'python3 src/run.py'
 
 test: venv  ## 🎯 Unit Tests für Flask app (ohne report xml)
 	. $(SRC_DIR)/.venv/bin/activate \
@@ -41,7 +46,7 @@ test-report: venv  ## 🎯 Unit tests für Flask app
 	. $(SRC_DIR)/.venv/bin/activate \
 	&& pytest -v --junitxml=test-results.xml
 
-test-api: ## 🚦 Durchführen von Integration-API-Tests; Server muss ausgeführt werden
+test-api: .EXPORT_ALL_VARIABLES ## 🚦 Durchführen von Integration-API-Tests; Server muss ausgeführt werden
 	cd postman-test \
 	&& npm install newman \
 	&& ./node_modules/.bin/newman run ./pm-test.json --env-var apphost=$(TEST_HOST)
