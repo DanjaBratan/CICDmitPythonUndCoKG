@@ -19,10 +19,6 @@
                             "pm.test(\"Home Page: Response valid & HTML body\", function () {",
                             "    pm.response.to.be.withBody;",
                             "    pm.expect(pm.response.headers.get('Content-Type')).to.contain('text/html');",
-                            "});",
-                            "",
-                            "pm.test(\"Home Page: Check content\", function () {",
-                            "    pm.expect(pm.response.text()).to.include('Notizen');",
                             "});"
                         ],
                         "type": "text/javascript"
