@@ -22,11 +22,6 @@ pipeline {
                 sh 'make test-report'
             }
         }
-        //stage('postman api test'){
-        //  steps{
-        //      sh 'make test-api'
-        //  }
-        //}
         stage('Build Docker Image'){
             steps{
                 sh 'make docker-build-image'
@@ -46,6 +41,7 @@ pipeline {
     }
     post{
         always{
+            echo "Post Schritte werden ausgeführt..."
             sh 'docker logout'
         }
     }

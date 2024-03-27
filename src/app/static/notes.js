@@ -1,9 +1,12 @@
 // JavaScript-Funktion zum Löschen einer Notiz
 function deleteNote(noteId) {
     // Eine Anfrage an den Server senden, um die Notiz zu löschen
-    fetch("/delete-note", {
+    fetch('/delete-note/'+ noteId, {
       method: "POST",
       body: JSON.stringify({ noteId: noteId }), // Die zu sendenden Daten in JSON-Format umwandeln und als Body der Anfrage setzen
+      headers: {
+        'Content-Type': 'application/json'
+      }
     }).then((_res) => {
       window.location.href = "/"; // Die Seite neu laden, um die aktualisierte Liste der Notizen anzuzeigen
     });

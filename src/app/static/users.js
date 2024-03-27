@@ -18,7 +18,7 @@ function updateUserEmail(userId) {
   if (newMail != null) {
       fetch('/update-user-email/'+ userId, {
           method: 'POST',
-          body: JSON.stringify({userId: userId, newMail: newMail}),
+          body: JSON.stringify({newMail: newMail}),
           headers: {
             'Content-Type': 'application/json'
           }

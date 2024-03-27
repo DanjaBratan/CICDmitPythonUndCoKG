@@ -2,7 +2,6 @@ from flask import Blueprint, render_template, request, flash, jsonify, redirect,
 from flask_login import login_required, current_user
 from .models import Note, User
 from . import db
-import json
 
 
 views = Blueprint("views", __name__)
@@ -27,19 +26,14 @@ def home():
     return render_template("home.html", user=current_user)
 
 
-@views.route("/delete-note", methods=["POST"])
-def delete_note():
-    note = json.loads(
-        request.data
-    )  # Konvertiert die JSON-Daten, die von JavaScript gesendet wurden, in ein Python-Datenobjekt
-    noteId = note[
-        "noteId"
-    ]  # Holt sich die ID der zu löschenden Notiz aus den JSON-Daten
-    note = Note.query.get(noteId)  # Sucht die Notiz in der Datenbank anhand der ID
+@views.route("/delete-note/<int:note_id>", methods=["POST"])
+@login_required
+def delete_note(note_id):
+    note = Note.query.get(note_id)  # Sucht die Notiz in der Datenbank anhand der ID
     if note:
-        if (
+        if (  # Überprüft, ob der aktuelle Benutzer die Berechtigung hat, die Notiz zu löschen
             note.user_id == current_user.id
-        ):  # Überprüft, ob der aktuelle Benutzer die Berechtigung hat, die Notiz zu löschen
+        ):
             db.session.delete(note)  # Löscht die Notiz aus der Datenbank
             db.session.commit()  # Speichert die Änderungen in der Datenbank
 
@@ -54,15 +48,21 @@ def update_note(note_id):
         "newNote"
     )  # Zugriff auf newNote aus dem JSON-Body der Anfrage
     if note:
-        if new_note:  # Überprüfe, ob neue Notizdaten vorhanden sind
-            note.data = new_note  # Aktualisiere die Notizdaten
-            db.session.commit()  # Speichere die Änderungen in der Datenbank
-            flash("Notiz erfolgreich aktualisiert!", category="success")
+        if (  # Überprüft, ob der aktuelle Benutzer die Berechtigung hat, die Notiz zu löschen
+            note.user_id == current_user.id
+        ):
+            if new_note:  # Überprüfe, ob neue Notizdaten vorhanden sind
+                note.data = new_note  # Aktualisiere die Notizdaten
+                db.session.commit()  # Speichere die Änderungen in der Datenbank
+                flash("Notiz erfolgreich aktualisiert!", category="success")
+            else:
+                flash("Keine Daten eingegeben.", category="error")
         else:
-            flash("Keine Daten eingegeben.", category="error")
+            flash("Du hast nicht die Rechte an der Notiz!", category="error")
     else:
         flash("Notiz nicht gefunden.", category="error")
-    return jsonify({"updated_note_data": note.data})  # Gibt eine JSON-Antwort zurück
+    return jsonify({})  # Gibt eine leere JSON-Antwort zurück
+    #return jsonify({"updated_note_data": note.data})  # Gibt eine JSON-Antwort zurück
 
 
 @views.route("/users", methods=["GET"])
@@ -82,7 +82,7 @@ def delete_user(user_id):
         if (
             user.id == current_user.id
         ):  # Überprüfe, ob der aktuelle Benutzer der ändernde User ist
-            notizenLoeschen(user)
+            alleUserNotizenLoeschen(user)
             db.session.delete(user)  # Löscht den Benutzer aus der Datenbank
             db.session.commit()  # Speichert die Änderungen in der Datenbank
             flash("User erfolgreich gelöscht!", category="success")
@@ -96,7 +96,7 @@ def delete_user(user_id):
     return jsonify({})  # Gibt eine JSON-Antwort zurück
 
 
-def notizenLoeschen(user):
+def alleUserNotizenLoeschen(user):
     # Holen Sie sich alle Notizen des Benutzers
     user_notes = Note.query.filter_by(user_id=user.id).all()
     # Löschen Sie jede Notiz des Benutzers aus der Datenbank
@@ -112,7 +112,9 @@ def updateUserEmail(user_id):
     new_mail = request.json.get(
         "newMail"
     )  # Zugriff auf newNote aus dem JSON-Body der Anfrage
-    if user:
+    if len(new_mail) < 4:
+            flash("Email muss länger als 3 Zeichen sein!", category="error")
+    elif user:
         if (
             user.id == current_user.id
         ):  # Überprüfe, ob der aktuelle Benutzer der ändernde User ist
