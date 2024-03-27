@@ -30,7 +30,7 @@ lint-fix: venv  ## 📜 Stilprüfung & Formatierung, versucht Fehler zu beheben 
 ## 🏃 lokales Ausführen des Servers mit Python und Flask 
 run-python-app: venv
 	. $(SRC_DIR)/.venv/bin/activate \
-	&& python3 src/main.py
+	&& python3 src/run.py
 
 
 test: venv  ## 🎯 Unit Tests für Flask app (ohne report xml)
