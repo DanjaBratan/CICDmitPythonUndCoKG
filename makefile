@@ -41,7 +41,7 @@ test-report: venv  ## 🎯 Unit tests für Flask app
 	. $(SRC_DIR)/.venv/bin/activate \
 	&& pytest -v --junitxml=test-results.xml
 
-test-api: .EXPORT_ALL_VARIABLES  ## 🚦 Durchführen von Integration-API-Tests; Server muss ausgeführt werden
+test-api: ## 🚦 Durchführen von Integration-API-Tests; Server muss ausgeführt werden
 	cd postman-test \
 	&& npm install newman \
 	&& ./node_modules/.bin/newman run ./pm-test.json --env-var apphost=$(TEST_HOST)

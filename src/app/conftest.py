@@ -28,7 +28,7 @@ def client(app):
 def test_user(app):
     with app.app_context():
         user = User(
-            email="test@example.com", password="securepassword", first_name="Test"
+            email="test@example.com", password="securepassword", first_name="TestUser1"
         )
         db.session.add(user)
         db.session.commit()
