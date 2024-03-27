@@ -1,7 +1,7 @@
 {
     "info": {
         "_postman_id": "d758a295-d6e7-40ac-a6ba-d9312cf9bbe5",
-        "name": "Python Demoapp",
+        "name": "Python Webapp",
         "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
     },
     "item": [

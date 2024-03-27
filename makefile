@@ -58,7 +58,6 @@ docker-build-image:  ## 🔨 Erstellt ein Container-Image aus dem Dockerfile
 	--tag $(IMAGE_REG)/$(IMAGE_REPO):$(IMAGE_TAG)
 	
 docker-run-container: ## Bringt alle bisherigen Container zum Stoppen und startet den Python-Container
-	sudo docker stop $(docker ps -q)
 	sudo docker run -d --rm -it -p 5000:5000 danielderking11/cicdmitpythonundcokg:latest
 
 docker-push-image:  ## 📤 Pushen des Container-Images ins Registry 
