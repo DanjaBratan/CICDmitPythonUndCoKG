@@ -1,0 +1,31 @@
+@startuml
+
+scale 400 width
+
+class Note {
+    - id: Integer
+    - data: String
+    - date: DateTime
+    - user_id: Integer
+    + getId
+    + getNote(Id)
+    + updateNote(Id, Data)
+    + deleteNote(Id)
+}
+
+class User {
+    - id: Integer
+    - email: String
+    - password: String
+    - first_name: String
+    - notes: List<Note>
+    + getId
+    + getUser(Id)
+    + updateUserEmail(Id, Email)
+    + deleteUser(Id)
+}
+
+
+
+User "*" -- "1" Note : hat
+@enduml

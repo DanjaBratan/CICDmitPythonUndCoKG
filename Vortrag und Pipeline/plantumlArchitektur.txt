@@ -1,0 +1,55 @@
+@startuml
+package "Flask Python Notes" {
+    file "run.py" as run_py
+
+    package "Controller" {
+        file "notes.js" as notes_js
+        file "users.js" as users_js
+        file "__init__.py" as init_py
+        file "auth.py" as auth_py
+        file "views.py" as views_py
+        
+    }
+
+    package "View" {
+        file "base.html" as base_html
+        file "home.html" as home_html
+        file "login.html" as login_html
+        file "sign_up.html" as sign_up_html
+        file "users.html" as users_html
+    }
+
+    package "Model" {
+        file "datenbank.db" as database_db
+        file "models.py" as models_py
+    }
+
+
+    run_py --> init_py
+    init_py --> views_py 
+    init_py --> auth_py 
+    
+    init_py <--> models_py
+    views_py <--> models_py
+    auth_py <--> models_py
+    views_py <--> notes_js 
+    views_py <--> users_js 
+    views_py <--> database_db
+    auth_py <--> views_py 
+    auth_py <--> models_py
+    models_py <--> database_db 
+    base_html <--> login_html
+    base_html <--> home_html
+    base_html <--> sign_up_html
+    base_html <--> users_html
+    base_html <--> database_db
+    home_html <--> database_db
+    home_html <--> notes_js
+    users_html <--> database_db
+    users_html <--> users_js
+    login_html <--> auth_py
+    sign_up_html <--> auth_py
+    
+
+}
+@enduml
